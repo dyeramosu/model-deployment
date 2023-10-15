@@ -96,11 +96,32 @@ We have our model weights stored in WandB after we performed serverless training
 * Run `python cli.py --upload`, this will download the model weights from WandB and upload to the specified bucket in `GCS_MODELS_BUCKET_NAME`
 
 ### Upload & Deploy Model to Vertex AI
-In this step
+In this step we first upload our model to Vertex AI Model registry. Then we deploy the model as an endpoint in Vertex AI Online prediction.
 
-* Run `python cli.py --deploy`,
+* Run `python cli.py --deploy`, this option will both upload and deploy model to Vertex AI
 * This will take a few minutes to complete
+* Once the model has been deployed the endpoint will be displayed. The endpoint will be similar to: `projects/129349313346/locations/us-central1/endpoints/5072058134046965760`
 
 ### Test Predictions
 
+* Update the endpoint uri in `cli.py`
 * Run `python cli.py --predict`
+* You  shouls see results simsialr to this:
+```
+Predict using endpoint
+image_files: ['data/oyster_3.jpg', 'data/oyster_2.jpg', 'data/oyster_1.jpg', 'data/oyster_4.jpg', 'data/crimini_1.jpg']
+Image: data/amanita_2.jpg
+Result: Prediction(predictions=[[0.0887121782, 0.0439011417, 0.867386699]], deployed_model_id='3704450387047088128', model_version_id='1', model_resource_name='projects/129349313346/locations/us-central1/models/8243511463436615680', explanations=None)
+[0.0887121782, 0.0439011417, 0.867386699] 2
+Label:    amanita 
+
+Image: data/oyster_4.jpg
+Result: Prediction(predictions=[[0.986440122, 0.00689249625, 0.0066674049]], deployed_model_id='3704450387047088128', model_version_id='1', model_resource_name='projects/129349313346/locations/us-central1/models/8243511463436615680', explanations=None)
+[0.986440122, 0.00689249625, 0.0066674049] 0
+Label:    oyster 
+
+Image: data/oyster_2.jpg
+Result: Prediction(predictions=[[0.80594486, 0.0182529744, 0.175802067]], deployed_model_id='3704450387047088128', model_version_id='1', model_resource_name='projects/129349313346/locations/us-central1/models/8243511463436615680', explanations=None)
+[0.80594486, 0.0182529744, 0.175802067] 0
+Label:    oyster 
+```
