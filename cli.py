@@ -92,38 +92,38 @@ def main(args=None):
         prediction_model = tf.keras.models.load_model(artifact_dir)
         print(prediction_model.summary())
 
-        MODEL_INPUT = "model_input"
-
-        def _preprocess(bytes_input):
+        def preprocess_image(bytes_input):
             decoded = tf.io.decode_jpeg(bytes_input, channels=3)
             decoded = tf.image.convert_image_dtype(decoded, tf.float32)
             resized = tf.image.resize(decoded, size=(224, 224))
             return resized
 
         @tf.function(input_signature=[tf.TensorSpec([None], tf.string)])
-        def preprocess_fn(bytes_inputs):
+        def preprocess_function(bytes_inputs):
             decoded_images = tf.map_fn(
-                _preprocess, bytes_inputs, dtype=tf.float32, back_prop=False
+                preprocess_image, bytes_inputs, dtype=tf.float32, back_prop=False
             )
-            return {MODEL_INPUT: decoded_images}
+            return {"model_input": decoded_images}
 
         @tf.function(input_signature=[tf.TensorSpec([None], tf.string)])
-        def serving_fn(bytes_inputs):
-            images = preprocess_fn(bytes_inputs)
+        def serving_function(bytes_inputs):
+            images = preprocess_function(bytes_inputs)
             results = model_call(**images)
             return results
 
         model_call = tf.function(prediction_model.call).get_concrete_function(
             [
                 tf.TensorSpec(
-                    shape=[None, 224, 224, 3], dtype=tf.float32, name=MODEL_INPUT
+                    shape=[None, 224, 224, 3], dtype=tf.float32, name="model_input"
                 )
             ]
         )
 
         # Save updated model to GCS
         tf.saved_model.save(
-            prediction_model, ARTIFACT_URI, signatures={"serving_default": serving_fn}
+            prediction_model,
+            ARTIFACT_URI,
+            signatures={"serving_default": serving_function},
         )
 
     elif args.deploy:
