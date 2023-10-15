@@ -92,6 +92,7 @@ def main(args=None):
         prediction_model = tf.keras.models.load_model(artifact_dir)
         print(prediction_model.summary())
 
+        # Preprocess Image
         def preprocess_image(bytes_input):
             decoded = tf.io.decode_jpeg(bytes_input, channels=3)
             decoded = tf.image.convert_image_dtype(decoded, tf.float32)
