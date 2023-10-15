@@ -52,3 +52,40 @@ Your folder structure should look like this:
 - On the right "Actions" column click the vertical ... and select "Manage keys". A prompt for Create private key for "model-deployment" will appear select "JSON" and click create. This will download a Private key json file to your computer. Copy this json file into the **secrets** folder. Rename the json file to `model-deployment.json`
 
 ### Create GCS Bucket
+
+We need a bucket to store the saved model files that we will be used by Vertext AI to deploy models.
+
+- Go to `https://console.cloud.google.com/storage/browser`
+- Create a bucket `mushroom-app-models-demo` [REPLACE WITH YOUR BUCKET NAME]
+
+## Run Container
+
+### Run `docker-shell.sh` or `docker-shell.bat`
+Based on your OS, run the startup script to make building & running the container easy
+
+This is what your `docker-shell` file will look like:
+```
+export IMAGE_NAME=model-deployment-cli
+export BASE_DIR=$(pwd)
+export SECRETS_DIR=$(pwd)/../secrets/
+export GCP_PROJECT="ac215-project" [REPLACE WITH YOUR PROJECT]
+export GCS_MODELS_BUCKET_NAME="mushroom-app-models-demo" [REPLACE WITH YOUR BUCKET NAME]
+
+
+# Build the image based on the Dockerfile
+#docker build -t $IMAGE_NAME -f Dockerfile .
+# M1/2 chip macs use this line
+docker build -t $IMAGE_NAME --platform=linux/arm64/v8 -f Dockerfile .
+
+# Run Container
+docker run --rm --name $IMAGE_NAME -ti \
+-v "$BASE_DIR":/app \
+-v "$SECRETS_DIR":/secrets \
+-e GOOGLE_APPLICATION_CREDENTIALS=/secrets/model-deployment.json \
+-e GCP_PROJECT=$GCP_PROJECT \
+-e GCS_MODELS_BUCKET_NAME=$GCS_MODELS_BUCKET_NAME \
+$IMAGE_NAME
+```
+
+- Make sure you are inside the `model-deployment` folder and open a terminal at this location
+- Run `sh docker-shell.sh` or `docker-shell.bat` for windows
