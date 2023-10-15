@@ -165,13 +165,10 @@ def main(args=None):
         )
 
         # Get a sample image to predict
-        base_path = "data"
-        image_files = os.listdir(base_path)
-        image_files = [os.path.join(base_path, img) for img in image_files]
-        np.random.shuffle(image_files)
+        image_files = glob(os.path.join("data", "*.jpg"))
         print("image_files:", image_files[:5])
 
-        image_samples = np.random.randint(0, high=len(image_files) - 1, size=3)
+        image_samples = np.random.randint(0, high=len(image_files) - 1, size=5)
         for img_idx in image_samples:
             print("Image:", image_files[img_idx])
 
