@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 google-cloud-aiplatform = "*"
 wandb = "*"
+pillow = "*"
+tensorflow-aarch64 = "*"
 
 [requires]
 python_version = "3.9"
