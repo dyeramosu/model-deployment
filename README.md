@@ -89,3 +89,18 @@ $IMAGE_NAME
 
 - Make sure you are inside the `model-deployment` folder and open a terminal at this location
 - Run `sh docker-shell.sh` or `docker-shell.bat` for windows
+
+### Prepare Model for Deployment
+We have our model weights stored in WandB after we performed serverless training. In this step we will download the model and upload it to a GCS bucket so Vertex AI can have access to it to deploy to an endpoint.
+
+* Run `python cli.py --upload`, this will download the model weights from WandB and upload to the specified bucket in `GCS_MODELS_BUCKET_NAME`
+
+### Upload & Deploy Model to Vertex AI
+In this step
+
+* Run `python cli.py --deploy`,
+* This will take a few minutes to complete
+
+### Test Predictions
+
+* Run `python cli.py --predict`
