@@ -21,7 +21,7 @@ Follow the [instructions](https://code.visualstudio.com/download) for your opera
 If you already have a preferred text editor, skip this step.  
 
 ## Setup Environments
-In this tutorial we will setup a container to manage packaging python code for training and creating jobs on Vertex AI (AI Platform) to run training tasks.
+In this tutorial we will setup a container to manage building and deploying models to Vertex AI Model Registry and Model Endpoints.
 
 **In order to complete this tutorial you will need your GCP account setup and a WandB account setup.**
 
