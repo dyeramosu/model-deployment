@@ -1,7 +1,7 @@
 # Mushroom App: Model Deployment Demo
 
 In this tutorial we will deploy a model to Vertex AI:
-<img src="images/serverless-training.png"  width="800">
+<img src="images/serverless-model-deployment.png"  width="800">
 
 ## Prerequisites
 * Have Docker installed
