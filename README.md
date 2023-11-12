@@ -125,3 +125,6 @@ Result: Prediction(predictions=[[0.80594486, 0.0182529744, 0.175802067]], deploy
 [0.80594486, 0.0182529744, 0.175802067] 0
 Label:    oyster 
 ```
+
+* View model endpoints: https://console.cloud.google.com/vertex-ai/online-prediction/endpoints
+* View model registry: https://console.cloud.google.com/vertex-ai/models
